@@ -5,14 +5,31 @@ const _do_decrypt = function (encrypted, password) {
     let decrypted_data = CryptoJS.AES.decrypt(encrypted, key, {
         iv: iv,
         mode: CryptoJS.mode.CBC,
-        padding: CryptoJS.pad.Pkcs7
+        padding: CryptoJS.pad.Pkcs7,
     });
     return decrypted_data.toString(CryptoJS.enc.Utf8);
 };
 
+function refreshScript(selector) {
+    const oldScript = document.querySelector(selector);
+    if (!oldScript) return;
+
+    // Tạo thẻ mới
+    const newScript = document.createElement("script");
+    // Copy attributes từ thẻ cũ
+    oldScript.getAttributeNames().forEach((name) => {
+        newScript.setAttribute(name, oldScript.getAttribute(name));
+    });
+
+    // Replace
+    oldScript.parentNode.replaceChild(newScript, oldScript);
+}
+
 const _click_handler = function (element) {
     let parent = element.parentNode.parentNode;
-    let encrypted = parent.querySelector(".hugo-enc-cipher-text").innerText.trim();
+    let encrypted = parent
+        .querySelector(".hugo-enc-cipher-text")
+        .innerText.trim();
     let password = parent.querySelector(".hugo-enc-input").value.trim();
     password = CryptoJS.MD5(password).toString();
 
@@ -43,7 +60,9 @@ const _click_handler = function (element) {
     let key = location.pathname + ".password." + index;
     storage.setItem(key, password);
     parent.innerHTML = decrypted;
-}
+    refreshScript('script[crossorigin="anonymous"][data-pjax][src="/js/pjax_main.js"]');
+    refreshScript('script[crossorigin="anonymous"][data-pjax][src="/js/insert_highlight.js');
+};
 
 window.onload = () => {
     let index = -1;
@@ -57,14 +76,17 @@ window.onload = () => {
 
         if (!password) {
             break;
-
         } else {
             console.log("Found password for part " + index);
 
             let parent = elements[index];
-            let encrypted = parent.querySelector(".hugo-enc-cipher-text").innerText.trim();
+            let encrypted = parent
+                .querySelector(".hugo-enc-cipher-text")
+                .innerText.trim();
             let decrypted = _do_decrypt(encrypted, password);
             elements[index].innerHTML = decrypted;
+            refreshScript('script[crossorigin="anonymous"][data-pjax][src="/js/pjax_main.js"]');
+            refreshScript('script[crossorigin="anonymous"][data-pjax][src="/js/insert_highlight.js');
         }
     }
 };
