@@ -1,4 +1,6 @@
-# Hugo Enc (Encryptor) 🔏
+# Hugo Enc (Encryptor) 🔏 Updated for hugo-reimu-theme usage
+
+[hugo-reimu-theme](https://github.com/D-Sketon/hugo-theme-reimu)
 
 > Note: This is a fork of https://github.com/Li4n0/hugo_encryptor
 
